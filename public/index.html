@@ -38,7 +38,7 @@
             $('#loading').fadeIn();
             $scope.notice = '数据加载中...'
             $http.get('/douban/data').then(function (res) {
-                // $('#loading').fadeOut();
+                $('#loading').fadeOut();
                 
                 if (res.data) {
                     $scope.DBData = res.data
