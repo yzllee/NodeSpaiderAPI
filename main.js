@@ -76,7 +76,7 @@ function task() {
 task();
 
 setInterval(function () {
-    data = [];
+    DBData = [];
     task();
 }, 60 * 60 * 1000);
 
