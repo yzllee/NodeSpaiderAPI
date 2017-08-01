@@ -38,13 +38,10 @@
             $('#loading').fadeIn();
             $scope.notice = '数据加载中...'
             $http.get('/douban/data').then(function (res) {
-                $('#loading').fadeOut();
-                
+                $('#loading').fadeOut();               
                 if (res.data) {
                     $scope.DBData = res.data
                 }
-            }, function (reason) {
-                $scope.notice = '数据迷路了...'
             });
         }])
     </script>
