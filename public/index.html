@@ -13,7 +13,7 @@
 </head>
 <body ng-app="myapp">
     <div id="loading">
-        <p ng-bind="notice"></p>
+        <p>数据加载中...</p>
         <span class="icon"></span>
     </div>
     <div ng-controller="ctrl"><input type="text" name="key" ng-model="query">
@@ -36,9 +36,10 @@
         const app = angular.module('myapp', []);
         app.controller('ctrl', ['$http', '$scope', function ($http, $scope) {
             $('#loading').fadeIn();
+            $scope.notice = '数据加载中...'
             $http.get('/douban/data').then(function (res) {
-                $('#loading').fadeOut();
-                $scope.notice = '数据加载中...'
+                // $('#loading').fadeOut();
+                
                 if (res.data) {
                     $scope.DBData = res.data
                 }
