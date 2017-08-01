@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/angular.js/1.6.5/angular.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <title>豆瓣小组找房子</title>
+</head>
+<style>
+    input {
+        display: block;
+        height: 20px;
+        margin: 20px auto;
+        padding: 5px;
+        border: 1px solid red;
+        outline: 0
+    }
+
+    table {
+        width: 100%;
+        max-width: 100%;
+        border-spacing: 0;
+        border-collapse: collapse;
+        text-align: center;
+        vertical-align: middle
+    }
+
+    table tr td {
+        padding: 15px 0
+    }
+
+    a {
+        color: #000000;
+    }
+
+    .source {
+        text-align: center;
+    }
+
+    .source a {
+        margin: 0 10px;
+    }
+
+    #loading {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100000;
+    }
+
+    #loading .icon {
+        width: 100%;
+        height: 100%;
+        background: url("./loading.gif") no-repeat;
+        background-size: 100%;
+        position: absolute;
+        top: 20%;
+    }
+</style>
+
+<body ng-app="myapp">
+    <div id="loading">
+        <span class="icon"></span>
+    </div>
+    <div ng-controller="ctrl" ng-init="dataSource = 'DB'"><input type="text" name="key" ng-model="query">
+        <!-- <div class="source">
+            <a href="" ng-click="change('DB')">豆瓣</a>
+            <a href="" ng-click="change('NT')">19楼</a>
+        </div> -->
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:70%">标题</th>
+                    <td style="width:30%">最后回复时间</td>
+                </tr>
+            </thead>
+            <tbody>
+                 <tr ng-repeat="item in DBData|filter: query">
+                    <td><a ng-href="{{item.url}}" ng-bind="item.title" target="_blank"></a></td>
+                    <td ng-bind="item.time"></td>
+                </tr>
+                <!-- <tr ng-repeat="item in NTData|filter: query" ng-if="dataSource ==='NT'">
+                    <td><a ng-href="{{item.url}}" ng-bind="item.title" target="_blank"></a></td>
+                    <td ng-bind="item.time"></td>
+                </tr>  -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const app = angular.module('myapp', []);
+        app.controller('ctrl', ['$http', '$scope', function ($http, $scope) {
+            $('#loading').fadeIn();
+            // $scope.change = function (param) {
+            //     $scope.dataSource = param;
+            // }
+            $http.get('/douban/data').then(function (res) {
+                $('#loading').fadeOut();
+                if (res.data) {
+                    $scope.DBData = res.data
+                }
+            });
+            // $http.get('/nineteen/data').then(function (res) {
+            //     if (res.data) {
+            //         $scope.NTData = res.data
+            //     }
+            // })
+        }])
+    </script>
+</body>
+
+</html>
